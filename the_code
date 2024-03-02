@@ -1,0 +1,345 @@
+// wojna.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
+//
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <cstdlib>
+#include <conio.h>
+#include <windows.h>
+
+#define AS 5
+#define KR 4
+#define QN 3
+#define JC 2
+#define OX 1
+#define IX 0
+
+using namespace std;
+
+
+vector <int> gracz1;
+vector <int> gracz2;
+
+
+
+
+
+
+
+
+void przydziel()
+{
+
+    vector <int> rozdanie(6, 0);
+
+    srand(time(0));
+    int karty = 24;
+    while (karty > 0)
+    {
+        int a = rand() % 6;
+      
+       
+        if (rozdanie[a] == 4)
+        {
+
+            continue;
+        }
+      
+
+        int n = rand() % 2;
+        if (n == 0 && gracz1.size() < 12)
+        {
+          
+            gracz1.push_back(a);
+           
+            rozdanie[a]++;
+         
+            karty--;
+        }
+        else if (n == 0 && gracz2.size() < 12)
+        {
+            
+            gracz2.push_back(a);
+          
+            rozdanie[a]++;
+            
+            karty--;
+        }
+        else if (n == 0)
+            break;
+
+        if (n == 1 && gracz2.size() < 12)
+        {
+            gracz2.push_back(a);
+            
+            rozdanie[a]++;
+         
+            karty--;
+        }
+        else if (n == 1 && gracz1.size() < 12)
+        {
+           
+            gracz1.push_back(a);
+            
+            rozdanie[a]++;
+            
+            karty--;
+        }
+        else if (n == 1)
+            break;
+
+
+
+    }
+}
+
+vector <int> stawka1, stawka2;
+
+void wyswietl(int a, int b) 
+{
+    cout << "gracz 1: ";
+    
+        switch (a)
+        {
+        case IX:
+            cout << "9  ";
+            break;
+        case OX:
+            cout << "10  ";
+            break;
+        case JC:
+            cout << "J  ";
+            break;
+        case QN:
+            cout << "Q  ";
+            break;
+        case KR:
+            cout << "K  ";
+            break;
+
+        case AS:
+            cout << "A  ";
+            break;
+    }
+        cout << "gracz 2: ";
+
+        switch (b)
+        {
+        case IX:
+            cout << "9  ";
+            break;
+        case OX:
+            cout << "10  ";
+            break;
+        case JC:
+            cout << "J  ";
+            break;
+        case QN:
+            cout << "Q  ";
+            break;
+        case KR:
+            cout << "K  ";
+            break;
+
+        case AS:
+            cout << "A  ";
+            break;
+        }
+
+        cout << "\n";
+
+
+
+
+}
+
+void pokaz(vector <int> a)
+{
+    for (int el : a)
+        switch (el)
+        {
+        case IX:
+            cout << " 9   ";
+            break;
+        case OX:
+            cout << "10   ";
+            break;
+        case JC:
+            cout << " J   ";
+            break;
+        case QN:
+            cout << " Q   ";
+            break;
+        case KR:
+            cout << " K   ";
+            break;
+
+        case AS:
+            cout << " A   ";
+            break;
+        }
+
+    cout << "\n";
+    
+}
+
+int runda()
+{
+    
+    Sleep(1000);
+    cout << "POROWNANIE" << endl;
+    cout << "\n";
+    int a, b;
+    if (gracz1.empty() && gracz2.empty())
+        return 0;
+    if (gracz1.empty()) {
+        a = gracz2[0];
+        gracz2.erase(gracz2.begin());
+    }
+    if (gracz2.empty())
+    {
+        b = gracz1[0];
+        gracz1.erase(gracz1.begin());
+    }
+    if(!gracz1.empty())
+    {
+        a = gracz1[0];
+        gracz1.erase(gracz1.begin());
+    }
+    if (!gracz2.empty())
+    {
+        b = gracz2[0];
+        gracz2.erase(gracz2.begin());
+    }
+    Sleep(1000);
+    wyswietl(a, b);
+    cout << "\n";
+    stawka1.push_back(a);
+    stawka2.push_back(b);
+
+    Sleep(1000);
+   
+    if (a > b)
+    {
+
+        return 1;
+
+    }
+    else if (a < b)
+    {
+        return 2;
+    }
+    else if (a == b)
+    {
+       
+        cout << "WOJNA" << endl;
+        cout << "\n";
+        if (gracz1.empty() && gracz2.empty())
+            return 0;
+        if (gracz1.empty()) {
+            a = gracz2[0];
+            gracz2.erase(gracz2.begin());
+        }
+        if (gracz2.empty())
+        {
+            b = gracz1[0];
+            gracz1.erase(gracz1.begin());
+        }
+        if (!gracz1.empty())
+        {
+            a = gracz1[0];
+            gracz1.erase(gracz1.begin());
+        }
+        if (!gracz2.empty())
+        {
+            b = gracz2[0];
+            gracz2.erase(gracz2.begin());
+        }
+        stawka1.push_back(a);
+        stawka2.push_back(b);
+     
+
+        int n = runda();
+        if (n == 1)
+            return 1;
+        if (n == 2)
+            return 2;
+    }
+
+    
+    
+}
+
+void screendeck()
+{
+    pokaz(gracz1);
+    pokaz(gracz2);
+}
+
+int main()
+{
+    przydziel();
+    int run = 0;
+
+    cout << "WITAJ W GRZE W WOJNE!" << "\n" << endl;
+
+    cout << "UZYWAJ KLAWISZU PRAWEJ STRZALKI BY WYKLADAC KARTY" << "\n" << endl;
+    
+    while (!gracz1.empty() && !gracz1.empty()) {
+        int key;
+        do
+        {
+            key = _getch();
+        } while (key != 77);
+        system("cls");
+        run++;
+       
+        cout << "RUNDA " << run << endl;
+        cout << "\n";
+        
+       
+        
+        int wyn = runda();
+        if (wyn == 0)
+        {
+            cout << "remis";
+            
+        }
+        else if (wyn == 1) {
+            cout << "PRZYDZIELANIE GRACZOWI 1 " << endl;
+            cout << "\n";
+            gracz1.insert(gracz1.end(), stawka2.begin(), stawka2.end());
+            gracz1.insert(gracz1.end(), stawka1.begin(), stawka1.end());
+            stawka1.clear();
+            stawka2.clear();
+
+        }
+        else if (wyn == 2) {
+            cout << "PRZYDZIELANIE GRACZOWI 2 " << endl;
+            cout << "\n";
+            gracz2.insert(gracz2.end(), stawka1.begin(), stawka1.end());
+            gracz2.insert(gracz2.end(), stawka2.begin(), stawka2.end());
+            stawka1.clear();
+            stawka2.clear();
+            
+        }
+        Sleep(1000);
+        cout << "LICZBA KART:  " << "GRACZ 1: " << gracz1.size() << "    " << "GRACZ 2: " << gracz2.size() << endl;
+        cout << "\n";
+        
+        if (gracz1.empty()) {
+            cout << "Gracz 2 wygrywa";
+            break;
+        }
+        if (gracz2.empty()) {
+            cout << "Gracz 1 wygrywa";
+            break;
+        }
+   
+
+    }
+
+
+}
+
